@@ -1,82 +1,121 @@
-# YouTube Transcript Processing Tool
+# YouTube Transcript Generator
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/therohitdas/Youtube-Transcript-Generator/blob/main/main.ipynb) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Overview
 
-This repository contains a versatile script for extracting and enhancing transcripts from YouTube videos. The script utilizes the [youtube-transcript-api](https://github.com/jdepoix/youtube-transcript-api) for obtaining raw transcripts and the [fullstop-punctuation-multilang-large](https://huggingface.co/oliverguhr/fullstop-punctuation-multilang-large) model for adding punctuations.
+The YouTube Transcript Generator is a powerful tool designed to streamline the process of extracting and processing transcripts from YouTube videos. Whether you're looking to transcribe lectures, interviews, or any other video content, this project provides a convenient solution.
+
+### How It Can Help
+
+This tool is particularly useful for:
+- **Note Taking:** Quickly convert YouTube videos into text format for easy note-taking.
+- **Content Analysis:** Analyze and derive insights from video content by converting it into text data.
+- **Chat Bot Training:** Use the generated transcripts to train chatbots, such as ChatGPT, for natural language understanding.
+- **Archiving:** Create a textual archive of valuable information from YouTube videos. This can be particularly useful for archiving interviews, tutorials, or any content you'd like to reference later without the need to re-watch the video.
+- **Personal Knowledge Base:** Build a personal knowledge base by extracting and processing transcripts from YouTube videos. This can aid in consolidating information on diverse topics in a readable and accessible format.
+- **Accessibility Improvement:** Enhance accessibility for individuals who prefer or require text-based content. The tool can be used to generate transcripts with added punctuation, improving the overall readability of the content.
 
 ## Features
 
-- **Raw Transcript Extraction:** Obtain raw transcripts from YouTube videos, supporting both auto-generated and user-added subtitles.
+- **Transcription:** Obtain raw transcripts from YouTube videos.
+- **Punctuation:** Enhance transcripts by adding punctuation using [deep multilingual punctuation models](https://huggingface.co/oliverguhr/fullstop-punctuation-multilang-large).
+- **Chapter Detection:** Identify and separate chapters in the video based on provided timestamps.
+- **User-friendly:** Easy-to-use script with customizable parameters.
 
-- **Punctuation Enhancement:** Improve transcript readability by adding punctuations using a powerful multilingual punctuation model.
+## Environment Variables
 
-## Usecase
-
-### Note Taking
-
-Effortlessly transcribe and enhance YouTube video content, making it convenient for note-taking during educational lectures, seminars, or any content you wish to remember.
-
-### Archiving
-
-Create a textual archive of valuable information from YouTube videos. This can be particularly useful for archiving interviews, tutorials, or any content you'd like to reference later without the need to re-watch the video.
-
-### Training Data for Machine Learning
-
-Gather high-quality training data for machine learning projects that involve natural language processing (NLP) or speech recognition. The tool provides a streamlined way to obtain clean and punctuated transcripts for model training.
-
-### Personal Knowledge Base
-
-Build a personal knowledge base by extracting and processing transcripts from YouTube videos. This can aid in consolidating information on diverse topics in a readable and accessible format.
-
-### Accessibility Improvement
-
-Enhance accessibility for individuals who prefer or require text-based content. The tool can be used to generate transcripts with added punctuations, improving the overall readability of the content.
-
-Feel free to explore additional use cases based on your specific needs and requirements! Suggest more use cases using issues or private DM on twitter.
-
-## Requirements
-
-Ensure you have the following dependencies installed:
-
-- [youtube-transcript-api](https://github.com/jdepoix/youtube-transcript-api)
-- [fullstop-punctuation-multilang-large](https://huggingface.co/oliverguhr/fullstop-punctuation-multilang-large)
-- nltk
-- tqdm
-
-## Usage Options
-
-This tool can be utilized in two ways:
-
-### 1. Google Colab Notebook (Recommended)
-
-- Open the [Google Colab notebook](https://colab.research.google.com/github/therohitdas/Youtube-Transcript-Generator/blob/main/main.ipynb).
-- Click on **File > Save a copy in Drive** to create your version.
-- Adjust script parameters in the notebook.
-- Execute the script cell to process the YouTube video transcript.
-
-### 2. Local Execution Using Python Script
-
-- Install Dependencies `pip install youtube-transcript-api deepmultilingualpunctuation nltk tqdm`
-- Run the provided Python script `script.py` locally on your machine.
-- Supply the required command-line arguments for customization.
-- Example:
-  ```bash
-  python script.py --url 'https://www.youtube.com/watch?v=YOUR_VIDEO_ID' --language 'en' --raw --output '/content' --filename 'notes'
-  ```
+- `GOOGLE_API_KEY`: Set up your Google API key for video information retrieval. You will need to create a Project in the google cloud for this and enable the YouTube v3 API. This is optional, if you don't add it, the chapters will not be added.
 
 ## Script Parameters
 
-- `url`: YouTube video URL. Both url formats are supported.
-- `language`: Language of the transcript (default: en).
-- `raw`: Generate raw transcript (default: True).
-- `punctuated`: Generate punctuated transcript.
-- `output`: Output directory for the transcript.
-- `filename`: Filename for the transcript file (excluding extension).
-- `batch_size`: Batch size for parallel processing (default: 0, auto-detect based on CPU cores).
-- `verbose`: Enable verbose mode for detailed output (default: True).
-- `punctuation_model`: Text for the punctuation model (default: '').
-  Every parameter is optional except URL
+- `url`: YouTube video URL. Both URL formats are supported.
+- `--language or -l`: Language of the transcript (default: en).
+- `--raw or -r`: Generate raw transcript (default: True).
+- `--punctuated or -p`: Generate punctuated transcript (Default: false).
+- `--output or -o`: Output directory for the transcript (default: current directory).
+- `--filename or -f`: Filename for the transcript file (excluding the extension), (Default: Video title or Video ID).
+- `--batch_size or -b`: Batch size for parallel processing (default: 0, auto-detect based on CPU cores).
+- `--verbose or -v`: Enable verbose mode for detailed output (default: True).
+- `--punctuation_model`: Text for the punctuation model (default: '').
+- `--help or -h`: Provides the help message. Every parameter is optional except the URL.
 
+## Run in Google Collab
+To run this project in Google Colab, follow these steps:
+1. Open the [Google Colab notebook](https://colab.research.google.com/github/therohitdas/Youtube-Transcript-Generator/blob/main/main.ipynb).
+2. Add Google's Project API key to the secrets tab under this key: `GOOGLE_API_KEY` and toggle notebook access to on.
+3. Edit the variables in the second last cell.
+
+## Run Locally
+
+I do not recommend running locally as it will download tensors and other stuff which are over 6gb. But if you want you can do this:
+1. Clone the repository: `git clone https://github.com/therohitdas/Youtube-Transcript-Generator.git`
+2. Install dependencies: `pip install youtube-transcript-api deepmultilingualpunctuation nltk tqdm pip install google-api-python-client google-auth-oauthlib`
+3. Set up the required environment variables: `GOOGLE_API_KEY` (optional).
+4. Run the script: `python index.py <YouTube_URL>` or `python index.py -h` for the help menu.
+
+## Support
+
+For any issues or feature requests, please [create an issue](https://github.com/therohitdas/Youtube-Transcript-Generator/issues).
+
+## Example
+Here's an example of how to run the script with various options:
+### Basic Usage
+```bash
+python index.py https://www.youtube.com/watch?v=VIDEO_ID
+```
+
+### Specify the Language
+
+```bash
+python index.py https://www.youtube.com/watch?v=VIDEO_ID -l fr
+```
+
+### Generate a Raw Transcript
+
+```bash
+python index.py https://www.youtube.com/watch?v=VIDEO_ID -r
+```
+
+### Generate a Punctuated Transcript
+
+```bash
+python index.py https://www.youtube.com/watch?v=VIDEO_ID -p
+```
+
+### Specify the Output Directory
+
+```bash
+python index.py https://www.youtube.com/watch?v=VIDEO_ID -o /path/to/output
+```
+
+### Specify a Custom Filename
+
+```bash
+python index.py https://www.youtube.com/watch?v=VIDEO_ID -f custom_filename
+```
+
+### Specify a Custom Batch Size
+
+```bash
+python index.py https://www.youtube.com/watch?v=VIDEO_ID -b 10
+```
+
+### Enable Verbose Mode
+
+```bash
+python index.py https://www.youtube.com/watch?v=VIDEO_ID -v
+```
+
+### Specify a Punctuation Model
+
+```bash
+python index.py https://www.youtube.com/watch?v=VIDEO_ID --punctuation_model model_name
+```
+Punctuation model name can be taken from [here](https://huggingface.co/oliverguhr/fullstop-punctuation-multilang-large).
+
+Make sure to replace `https://www.youtube.com/watch?v=VIDEO_ID` with the actual URL of the YouTube video you want to process.
+
+Feel free to copy and paste these examples into your terminal.
 ## Acknowledgments
 
 This script utilizes the [youtube-transcript-api](https://github.com/jdepoix/youtube-transcript-api) and [fullstop-punctuation-multilang-large](https://huggingface.co/oliverguhr/fullstop-punctuation-multilang-large) libraries. Special thanks to their contributors.
@@ -84,8 +123,8 @@ This script utilizes the [youtube-transcript-api](https://github.com/jdepoix/you
 Feel free to adapt and use the script based on your requirements. Enjoy the convenience of YouTube transcript processing!
 
 ## Connect with me
-
-I am new to the AI world and would love to connect with others who share this interest.
-
+The best way to connect is to email me [namaste@theRohitDas.com](mailto:namaste@therohitdas.com)
 - [x/therohitdas](https://x.com/therohitdas)
 - [GitHub/therohitdas](https://github.com/therohitdas)
+
+🚀 Happy transcribing!
