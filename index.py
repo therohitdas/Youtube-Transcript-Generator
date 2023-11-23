@@ -186,6 +186,7 @@ if __name__ == '__main__':
                         help='User-defined batch size for parallel processing (default: automatic)')
     parser.add_argument('-v', '--verbose', action='store_true', help='Enable verbose mode')
     parser.add_argument('--punctuation_model', type=str, default='', help='Text for the punctuation model')
+    parser.add_argument('-h', '--help', action='help', default=argparse.SUPPRESS, help='Show this help message and exit')
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO)
