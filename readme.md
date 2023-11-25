@@ -54,7 +54,7 @@ To run this project in Google Colab, follow these steps:
 
 I do not recommend running locally as it will download tensors and other stuff which are over 6gb. But if you want you can do this:
 1. Clone the repository: `git clone https://github.com/therohitdas/Youtube-Transcript-Generator.git`
-2. Install dependencies: `pip install youtube-transcript-api deepmultilingualpunctuation nltk tqdm pip install google-api-python-client google-auth-oauthlib`
+2. Install dependencies: `pip install youtube-transcript-api deepmultilingualpunctuation nltk google-api-python-client google-auth-oauthlib`
 3. Set up the required environment variables: `GOOGLE_API_KEY` (optional).
 4. Run the script: `python index.py <YouTube_URL>` or `python index.py -h` for the help menu.
 
