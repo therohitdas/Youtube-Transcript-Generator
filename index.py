@@ -3,11 +3,10 @@ import argparse
 import logging
 import re
 import math
+
 import nltk
-import google_auth_oauthlib.flow
 import googleapiclient.discovery
 import googleapiclient.errors
-from multiprocessing import Pool
 from deepmultilingualpunctuation import PunctuationModel
 from youtube_transcript_api import YouTubeTranscriptApi
 
