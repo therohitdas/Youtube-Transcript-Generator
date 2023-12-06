@@ -1,6 +1,7 @@
 # YouTube Transcript Generator
 [![Open in Collab](https://img.shields.io/badge/Open_in_Collab-555?style=for-the-badge&logo=googlecolab&labelColor=gray&color=purple)](https://colab.research.google.com/github/therohitdas/Youtube-Transcript-Generator/blob/main/main.ipynb)
 ![GitHub License](https://img.shields.io/github/license/therohitdas/Youtube-Transcript-Generator?style=for-the-badge&color=blue) ![GitHub Repo stars](https://img.shields.io/github/stars/therohitdas/Youtube-Transcript-Generator?style=for-the-badge&logo=github)
+[![CodeFactor](https://www.codefactor.io/repository/github/therohitdas/youtube-transcript-generator/badge?style=for-the-badge)](https://www.codefactor.io/repository/github/therohitdas/youtube-transcript-generator)
 
 ## Overview 🌐
 
