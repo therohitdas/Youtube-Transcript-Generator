@@ -105,7 +105,7 @@ def get_transcript(video_id, language, video_info, verbose=True):
         transcript = ''
     current_chapter_index = 0
     chapters = video_info["chapters"]
-    logging.info(f"""Transcript_List Length: {
+    logging.info(f"""Transcript List Length: {
                  len(transcript_list)}, Chapter Length: {len(chapters)}""")
 
     for i, line in enumerate(transcript_list):
@@ -125,8 +125,6 @@ def get_transcript(video_id, language, video_info, verbose=True):
                 buffer_time = 2
 
                 if start_time >= chapter_start_seconds - buffer_time:
-                    logging.info(
-                        f'\n\n## {chapters[current_chapter_index]["title"]}\n')
                     current_chapter_index += 1
             except Exception as e:
                 logging.error(
@@ -148,21 +146,19 @@ def get_transcript(video_id, language, video_info, verbose=True):
 
 def process_and_save_transcript(video_id, video_info, language, generate_punctuated, output_dir, filename, verbose, punctuation_model):
     try:
+        logging.info('Getting transcript...')
         raw_transcript = get_transcript(
             video_id, language, video_info, verbose)
-        logging.info("Raw Transcript Length: %d", len(raw_transcript))
 
         if generate_punctuated:
+            logging.info('Generating punctuated transcript...')
             with_punctuation = add_punctuation(
                 raw_transcript, punctuation_model)
             with_punctuation = remove_period_after_hashes(with_punctuation)
-            logging.info("Punctuation Char Length: %d", len(with_punctuation))
+            logging.info('Capitalizing sentences...')
             sentences = nltk.sent_tokenize(with_punctuation)
-            logging.info("Sentences to process, (punctuated): %d",
-                         len(sentences))
         else:
             sentences = nltk.sent_tokenize(raw_transcript)
-            logging.info("Sentences to process, (raw): %d", len(sentences))
 
         # Capitalize sentences without batching
         capitalized_sentences = capitalize_sentences(sentences)
@@ -171,13 +167,16 @@ def process_and_save_transcript(video_id, video_info, language, generate_punctua
         capitalized_transcript = double_linesep.join(capitalized_sentences)
         output_path = os.path.join(output_dir, f'{filename}.md')
 
+        logging.info(f'Saving transcript to {output_path}...')
         with open(output_path, 'w', encoding='utf-8') as f:
             f.write(capitalized_transcript)
 
+        # set log level to info to print the output path
+        logging.getLogger().setLevel(logging.INFO)
         if generate_punctuated:
-            logging.info(f'Punctuated transcript saved to {output_path}')
+            logging.info(f'Punctuated transcript saved to \'{output_path}\'')
         else:
-            logging.info(f'Raw transcript saved to {output_path}')
+            logging.info(f'Raw transcript saved to \'{output_path}\'')
 
     except Exception as e:
         logging.error(f'Error: {e}')
@@ -191,6 +190,7 @@ def getVideoInfo(video_id):
             raise Exception(
                 "No API key found, please set the YOUTUBE_API_KEY environment variable. \n Example: export YOUTUBE_API_KEY=your_api_key"
             )
+        logging.info('Getting video info...')
         youtube = googleapiclient.discovery.build(
             "youtube", "v3", developerKey=api_key)
         request = youtube.videos().list(part="id,snippet",
@@ -241,6 +241,10 @@ def main():
                         help='Print verbose output (default: False)')
 
     args = parser.parse_args()
+
+    # if verbose is false, set logging level to error
+    if not args.verbose:
+        logging.getLogger().setLevel(logging.ERROR)
 
     video_id = parse_youtube_url(args.url)
     video_info = getVideoInfo(video_id)
