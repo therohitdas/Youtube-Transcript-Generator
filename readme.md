@@ -14,7 +14,7 @@ This tool is particularly useful for:
 
 - **Note Taking:** Quickly convert YouTube videos into text format for easy note-taking.
 - **Content Analysis:** Analyze and derive insights from video content by converting it into text data.
-- **Chat Bot Training:** Use the generated transcripts to train chatbots, such as ChatGPT, for natural language understanding.
+- **Chat Bot Training:** Use the generated transcripts to train chat bots, such as ChatGPT, for natural language understanding.
 - **Archiving:** Create a textual archive of valuable information from YouTube videos. This can be particularly useful for archiving interviews, tutorials, or any content you'd like to reference later without the need to re-watch the video.
 - **Personal Knowledge Base:** Build a personal knowledge base by extracting and processing transcripts from YouTube videos. This can aid in consolidating information on diverse topics in a readable and accessible format.
 - **Accessibility Improvement:** Enhance accessibility for individuals who prefer or require text-based content. The tool can be used to generate transcripts with added punctuation, improving the overall readability of the content.
@@ -62,7 +62,7 @@ To run this project in Google Colab, follow these steps:
 
 I do not recommend running locally as it will download tensors and other stuff which are over 6gb. But if you want you can do this:
 
-1. Clone the repository: `git clone https://github.com/therohitdas/Youtube-Transcript-Generator.git`
+1. Clone the repository: `git clone https://github.com/therohitdas/Youtube-Transcript-Generator.git && cd Youtube-Transcript-Generator`
 2. Create a virtual environment: `python -m venv venv`
 3. Activate the virtual environment: `source venv/bin/activate` (Linux/MacOS) or `venv\Scripts\activate` (Windows)
 4. Install dependencies: `pip install -r requirements.txt`
