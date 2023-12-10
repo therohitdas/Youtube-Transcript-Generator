@@ -3,6 +3,7 @@ import argparse
 import logging
 import re
 import math
+import warnings
 
 import nltk
 import googleapiclient.discovery
@@ -11,6 +12,8 @@ from deepmultilingualpunctuation import PunctuationModel
 from youtube_transcript_api import YouTubeTranscriptApi
 
 logging.basicConfig(level=logging.INFO, force=True)
+# stop any warnings
+warnings.filterwarnings("ignore")
 
 
 def clean_for_filename(title):
@@ -98,7 +101,8 @@ def get_transcript(video_id, language, video_info, verbose=True):
 
     if video_info["title"] != "":
         transcript = f'# {video_info["title"]}\n\n'
-
+    else:
+        transcript = ''
     current_chapter_index = 0
     chapters = video_info["chapters"]
     logging.info(f"""Transcript_List Length: {
