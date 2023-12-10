@@ -184,7 +184,9 @@ def getVideoInfo(video_id):
         # Set up Google API credentials using API key
         api_key = os.environ.get('YOUTUBE_API_KEY')
         if api_key is None:
-            raise Exception("No API key found")
+            raise Exception(
+                "No API key found, please set the YOUTUBE_API_KEY environment variable. \n Example: export YOUTUBE_API_KEY=your_api_key"
+            )
         youtube = googleapiclient.discovery.build(
             "youtube", "v3", developerKey=api_key)
         request = youtube.videos().list(part="id,snippet",
