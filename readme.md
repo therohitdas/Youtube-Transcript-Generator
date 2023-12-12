@@ -8,6 +8,11 @@
 
 The YouTube Transcript Generator is a powerful tool designed to streamline the process of extracting and processing transcripts from YouTube videos. Whether you're looking to transcribe lectures, interviews, or any other video content, this project provides a convenient solution.
 
+### Variant:
+
+This script uses a fork of [rpunct by Daulet Nurmanbetov](https://github.com/therohitdas/rpunct) for punctuating the text. This variant is more accurate but takes longer to run.
+If you want to use the other version, use the main branch of my repo.
+
 ### How It Can Help 🚀
 
 This tool is particularly useful for:
@@ -22,7 +27,7 @@ This tool is particularly useful for:
 ## Features 🛠️
 
 - **Transcription:** Obtain raw transcripts from YouTube videos.
-- **Punctuation:** Enhance transcripts by adding punctuation using [deep multilingual punctuation models](https://huggingface.co/oliverguhr/fullstop-punctuation-multilang-large).
+- **Punctuation:** Enhance transcripts by adding punctuation using [felflare/bert-restore-punctuation](https://huggingface.co/felflare/bert-restore-punctuation).
 - **Chapter Detection:** Identify and separate chapters in the video based on provided timestamps.
 - **User-friendly:** Easy-to-use script with customizable parameters.
 
@@ -41,15 +46,13 @@ When running the script locally, you can pass these parameters to the script:
 ### Optional Arguments:
 
 - `-h, --help`: Show the help message and exit
-- `-l LANGUAGE, --language LANGUAGE`: Language for the transcript (default: en)
 - `-p, --punctuated`: Generate punctuated transcript (default: False)
 - `-a, -auto-open`: Automatically open the transcript in the default app (default: False)
 - `-o OUTPUT_DIR, --output_dir OUTPUT_DIR`: Output directory for saving the transcript (default: current directory)
 - `-f FILENAME, --filename FILENAME`: Filename for saving the transcript (default: Video Title or Video Id)
-- `-m PUNCTUATION_MODEL, --punctuation_model PUNCTUATION_MODEL`: Path to the punctuation model (default: None)
 - `-v, --verbose`: Print verbose output (default: False)
 
-## Run in Google Colab 🚀
+<!-- ## Run in Google Colab 🚀
 
 To run this project in Google Colab, follow these steps:
 
@@ -57,18 +60,46 @@ To run this project in Google Colab, follow these steps:
 2. Add Google's Project API key to the secrets tab under this key: `YOUTUBE_API_KEY` and toggle notebook access to on.
 3. Go to Runtime > Change Runtime Type and select T4 GPU type. If you use CPU, the output for punctuated transcript will take some minutes to complete (around 1 minute per 10-minute video)
 4. Change the values in the second cell to include your URL etc.
-5. Press CTRL+F9 or CMD+F9 to run the notebook.
+5. Press CTRL+F9 or CMD+F9 to run the notebook. -->
 
 ## Run Locally 💻
 
-I do not recommend running locally as it will download tensors and other stuff which are over 6gb. But if you want you can do this:
+1. Clone the repository:
 
-1. Clone the repository: `git clone https://github.com/therohitdas/Youtube-Transcript-Generator.git && cd Youtube-Transcript-Generator`
-2. Create a virtual environment: `python -m venv venv`
-3. Activate the virtual environment: `source venv/bin/activate` (Linux/MacOS) or `venv\Scripts\activate` (Windows)
-4. Install dependencies: `pip install -r requirements.txt`
+```bash
+git clone -b bert https://github.com/therohitdas/Youtube-Transcript-Generator.git && cd Youtube-Transcript-Generator
+```
+
+2. Create a virtual environment:
+
+```bash
+python -m venv venv
+```
+
+3. Activate the virtual environment:
+
+```bash
+source venv/bin/activate #(Linux/MacOS)
+# or
+venv\Scripts\activate #(Windows)
+```
+
+4. Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
 5. Set up the required environment variables: `YOUTUBE_API_KEY` (optional). You can either create a `.env` file or set them up in your system using.
-6. Run the script: `python index.py <YouTube_URL>` or `python index.py -h` for the help menu.
+6. Run the script:
+
+```bash
+python index.py <YouTube_URL> -p -v
+# or
+python index.py <YouTube_URL> -h # for help
+```
+
+> ❗️ **Important:** The first run can be slow as the model is downloaded. Please run in verbose mode to see the progress. If the script appears to be stuck, please wait for a few minutes before terminating the process.
 
 ## Support 🤝
 
@@ -84,10 +115,12 @@ Here's an example of how to run the script with various options:
 python index.py https://www.youtube.com/watch?v=VIDEO_ID
 ```
 
-### Specify the Language
+### My favorite usage
+
+Generates punctuated transcript, adds chapters and opens the transcript in the default app.
 
 ```bash
-python index.py https://www.youtube.com/watch?v=VIDEO_ID -l fr
+python index.py https://www.youtube.com/watch?v=VIDEO_ID -pav -o ~/Documents/Transcripts
 ```
 
 ### Generate a Raw Transcript
@@ -120,13 +153,11 @@ python index.py https://www.youtube.com/watch?v=VIDEO_ID -f custom_filename
 python index.py https://www.youtube.com/watch?v=VIDEO_ID -v
 ```
 
-### Specify a Punctuation Model
+### Automatically Open the Transcript
 
 ```bash
-python index.py https://www.youtube.com/watch?v=VIDEO_ID -m author/model_name
+python index.py https://www.youtube.com/watch?v=VIDEO_ID -a
 ```
-
-Punctuation model name can be taken from [here](https://huggingface.co/oliverguhr/fullstop-punctuation-multilang-large#languages).
 
 Make sure to replace `https://www.youtube.com/watch?v=VIDEO_ID` with the actual URL of the YouTube video you want to process.
 
@@ -134,7 +165,7 @@ Feel free to copy and paste these examples into your terminal.
 
 ## Acknowledgments 🙌
 
-This script utilizes the [youtube-transcript-api](https://github.com/jdepoix/youtube-transcript-api) and [fullstop-punctuation-multilang-large](https://huggingface.co/oliverguhr/fullstop-punctuation-multilang-large) libraries. Special thanks to their contributors.
+This script utilizes the [youtube-transcript-api](https://github.com/jdepoix/youtube-transcript-api) and forked [rpunct](https://github.com/therohitdas/rpunct) libraries. Special thanks to their contributors.
 
 Feel free to adapt and use the script based on your requirements. Enjoy the convenience of YouTube transcript processing!
 
