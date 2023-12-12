@@ -43,6 +43,7 @@ When running the script locally, you can pass these parameters to the script:
 - `-h, --help`: Show the help message and exit
 - `-l LANGUAGE, --language LANGUAGE`: Language for the transcript (default: en)
 - `-p, --punctuated`: Generate punctuated transcript (default: False)
+- `-a, -auto-open`: Automatically open the transcript in the default app (default: False)
 - `-o OUTPUT_DIR, --output_dir OUTPUT_DIR`: Output directory for saving the transcript (default: current directory)
 - `-f FILENAME, --filename FILENAME`: Filename for saving the transcript (default: Video Title or Video Id)
 - `-m PUNCTUATION_MODEL, --punctuation_model PUNCTUATION_MODEL`: Path to the punctuation model (default: None)

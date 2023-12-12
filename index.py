@@ -4,6 +4,8 @@ import logging
 import re
 import math
 import warnings
+import subprocess
+import platform
 
 import nltk
 import googleapiclient.discovery
@@ -14,6 +16,20 @@ from youtube_transcript_api import YouTubeTranscriptApi
 logging.basicConfig(level=logging.INFO, force=True)
 # stop any warnings
 warnings.filterwarnings("ignore")
+
+
+def open_file(filename):
+    # Open the file using the default application
+    logging.info(f'Opening \'{filename}\'...')
+    try:
+        if platform.system() == "Darwin":       # macOS
+            subprocess.call(('open', filename))
+        elif platform.system() == "Windows":    # Windows
+            os.startfile(filename)
+        else:                                   # linux variants
+            subprocess.call(('xdg-open', filename))
+    except Exception as e:
+        logging.error(f'Error: {e}')
 
 
 def clean_for_filename(title):
@@ -125,6 +141,8 @@ def get_transcript(video_id, language, video_info, verbose=True):
                 buffer_time = 2
 
                 if start_time >= chapter_start_seconds - buffer_time:
+                    # If the start time is within the buffer time, add the chapter title
+                    transcript += f'\n\n## {chapters[current_chapter_index]["title"]}\n\n'
                     current_chapter_index += 1
             except Exception as e:
                 logging.error(
@@ -207,6 +225,27 @@ def getVideoInfo(video_id):
 
 
 def main():
+    parser = argparse.ArgumentParser(
+        description='Process YouTube video transcript and save it.')
+    parser.add_argument('url', type=str, help='YouTube video URL')
+    parser.add_argument('-l', '--language', type=str, default='en',
+                        help='Language for the transcript (default: en)')
+    parser.add_argument('-p', '--punctuated', action='store_true',
+                        help='Generate punctuated transcript (default: False)')
+    parser.add_argument('-o', '--output_dir', type=str, default='.',
+                        help='Output directory for saving the transcript (default: .)')
+    parser.add_argument('-f', '--filename', type=str, default='',
+                        help='Filename for saving the transcript (default: Video Title or Video Id)')
+    parser.add_argument('-m', '--punctuation_model', type=str, default='',
+                        help='Path to the punctuation model (default: None)')
+    parser.add_argument('-a', '--auto-open', action='store_true',
+                        help='Automatically open the generated file in the default application (default: False)')
+    parser.add_argument('-v', '--verbose', action='store_true',
+                        help='Print verbose output (default: False)')
+
+    args = parser.parse_args()
+
+    # Install NLTK punkt if not already installed
     try:
         nltk.data.find('tokenizers/punkt')
     except LookupError:
@@ -224,27 +263,10 @@ def main():
             else:
                 logging.error('Error downloading punkt. Exiting.')
             exit(1)
-    parser = argparse.ArgumentParser(
-        description='Process YouTube video transcript and save it.')
-    parser.add_argument('url', type=str, help='YouTube video URL')
-    parser.add_argument('-l', '--language', type=str, default='en',
-                        help='Language for the transcript (default: en)')
-    parser.add_argument('-p', '--punctuated', action='store_true',
-                        help='Generate punctuated transcript (default: False)')
-    parser.add_argument('-o', '--output_dir', type=str, default='.',
-                        help='Output directory for saving the transcript (default: .)')
-    parser.add_argument('-f', '--filename', type=str, default='',
-                        help='Filename for saving the transcript (default: Video Title or Video Id)')
-    parser.add_argument('-m', '--punctuation_model', type=str, default='',
-                        help='Path to the punctuation model (default: None)')
-    parser.add_argument('-v', '--verbose', action='store_true',
-                        help='Print verbose output (default: False)')
-
-    args = parser.parse_args()
 
     # if verbose is false, set logging level to error
     if not args.verbose:
-        logging.getLogger().setLevel(logging.ERROR)
+        logging.getLogger().setLevel(logging.INFO)
 
     video_id = parse_youtube_url(args.url)
     video_info = getVideoInfo(video_id)
@@ -253,6 +275,10 @@ def main():
 
     process_and_save_transcript(video_id, video_info, args.language, args.punctuated,
                                 args.output_dir, filename, args.verbose, args.punctuation_model)
+
+    if args.auto_open:
+        output_path = os.path.join(args.output_dir, f'{filename}.md')
+        open_file(output_path)
 
 
 if __name__ == "__main__":
