@@ -68,7 +68,8 @@ def add_punctuation(text, punctuation_model):
         model = PunctuationModel(model=punctuation_model)
     else:
         model = PunctuationModel()
-        punctuated_text = model.restore_punctuation(text)
+
+    punctuated_text = model.restore_punctuation(text)
     return punctuated_text
 
 
