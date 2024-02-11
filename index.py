@@ -7,6 +7,7 @@ import warnings
 import subprocess
 import platform
 
+from dotenv import load_dotenv
 from tqdm import tqdm
 from rpunct import RestorePuncts
 import googleapiclient.discovery
@@ -16,8 +17,13 @@ from youtube_transcript_api import YouTubeTranscriptApi
 verbose = logging.ERROR
 logging.basicConfig(level=verbose, force=True)
 
+
 # stop any warnings
 warnings.filterwarnings("ignore")
+
+
+# Load environment variables from .env file
+load_dotenv()
 
 
 def open_file(filename):

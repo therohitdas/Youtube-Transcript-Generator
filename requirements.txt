@@ -56,6 +56,7 @@ pydeck==0.8.1b0
 Pygments==2.17.2
 pyparsing==3.1.1
 python-dateutil==2.8.2
+python-dotenv==1.0.1
 pytz==2023.3.post1
 PyYAML==6.0.1
 referencing==0.32.0
@@ -64,7 +65,7 @@ requests==2.31.0
 requests-oauthlib==1.3.1
 rich==13.7.0
 rpds-py==0.13.2
-git+https://github.com/therohitdas/rpunct.git
+rpunct @ git+https://github.com/therohitdas/rpunct.git@f1a429947b62042e23e0f84bd8fd40bf97279d46
 rsa==4.9
 safetensors==0.4.1
 scikit-learn==1.3.2
